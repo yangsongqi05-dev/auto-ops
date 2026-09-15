@@ -1,0 +1,53 @@
+# ============================================================
+#  Linux 自动化巡检 - 定时任务配置示例
+#  用法：将此文件内容合并到 crontab
+#       crontab -e  然后粘贴下面的配置
+# ============================================================
+
+# ============ 脚本路径（按实际部署位置修改）============
+# 假设脚本部署在 /opt/auto-ops/
+# 如果部署在其他目录，请替换下面的路径
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=""
+
+# ============ 定时巡检 ============
+
+# 每天早上 9:00 执行一次系统巡检
+0 9 * * * /opt/auto-ops/check_all.sh >> /var/log/ops-check/cron_check.log 2>&1
+
+# 每小时执行一次巡检（可选，用于关键业务服务器）
+# 0 * * * * /opt/auto-ops/check_all.sh >> /var/log/ops-check/cron_check.log 2>&1
+
+# ============ 定时清理 ============
+
+# 每周日凌晨 3:00 清理历史日志（保留最近 7 天）
+0 3 * * 0 /opt/auto-ops/clean_logs.sh -n 7 >> /var/log/ops-check/cron_clean.log 2>&1
+
+# 每月 1 日凌晨 4:00 清理巡检报告本身（保留 30 天）
+0 4 1 * * /opt/auto-ops/clean_logs.sh -d /var/log/ops-check -n 30 >> /var/log/ops-check/cron_clean.log 2>&1
+
+# ============ 说明 ============
+#
+# cron 时间格式：
+#   *  *  *  *  *  command
+#   │  │  │  │  │
+#   │  │  │  │  └─── 星期几 (0-7, 0和7都是周日)
+#   │  │  │  └────── 月份 (1-12)
+#   │  │  └───────── 日期 (1-31)
+#   │  └──────────── 小时 (0-23)
+#   └─────────────── 分钟 (0-59)
+#
+# 常用示例：
+#   0 9 * * *        每天 9:00
+#   0 */2 * * *      每 2 小时
+#   30 3 * * 1       每周一 3:30
+#   0 3 1 * *        每月 1 日 3:00
+#
+# 查看 cron 日志（确认任务是否执行）：
+#   grep CRON /var/log/syslog          # Ubuntu
+#   grep CRON /var/log/cron            # CentOS
+#
+# 查看当前用户的定时任务：
+#   crontab -l
