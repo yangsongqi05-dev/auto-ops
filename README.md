@@ -1,5 +1,7 @@
 # Linux 自动化巡检脚本集
+## 运行效果
 
+![巡检运行效果](屏幕截图 2026-09-15 163413.png)
 一套基于 Shell 的 Linux 服务器日常巡检与运维自动化脚本，用于替代人工巡检。
 
 **适配环境：CentOS 7 / 8、RHEL 7+、Rocky Linux、AlmaLinux**（含发行版判断，Ubuntu 亦可运行）
