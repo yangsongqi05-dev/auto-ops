@@ -1,0 +1,18 @@
+# ===== 巡检产生的报告与日志（运行时产物，不入库）=====
+/report_*.txt
+clean_*.log
+cron_*.log
+*.log
+
+# ===== 编辑器与系统文件 =====
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 临时文件 =====
+*.tmp
+*.bak
